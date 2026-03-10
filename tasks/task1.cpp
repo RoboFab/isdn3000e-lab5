@@ -124,6 +124,7 @@ void task1() {
         x_q->updateData(ee_x);
         y_q->updateData(ee_y);
         z_q->updateData(ee_z);
+        
     };
 
     polyscope::show();

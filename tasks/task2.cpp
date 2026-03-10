@@ -122,7 +122,7 @@ void task2() {
     //  Hint: your can change the numbers of R and T_goal to obtain the correct frame
     Eigen::Matrix3d R =
         (Eigen::AngleAxisd(M_PI / 2.0, Eigen::Vector3d::UnitZ()) *
-         Eigen::AngleAxisd(M_PI / 6.0, Eigen::Vector3d::UnitY())).toRotationMatrix();
+         Eigen::AngleAxisd(M_PI / 2.0, Eigen::Vector3d::UnitY())).toRotationMatrix();
     T_goal <<
         R(0,0), R(0,1), R(0,2), 0.20,
         R(1,0), R(1,1), R(1,2), 0.20,

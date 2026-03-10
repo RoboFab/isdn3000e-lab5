@@ -74,29 +74,15 @@ void task1() {
     ee_y[0] = axis_len * R.col(1);
     ee_z[0] = axis_len * R.col(2);
 
-    // TODO (Task1): Draw the frame of the end effector, which consists of:
+    // TODO 1: Draw the frame of the end effector, which consists of:
     //   - an origin point using ps_cloud = registerPointCloud()
     //   - three axis directions X, Y, Z using i.e. x_q = ps_cloud->addVectorQuantity("x_axis", ee_x)
     //      - set color to three axis directions: X = red, Y = green, Z = blue
     //      - set each direction vector radius to 0.1 and vector length scale to 0.1 to better visualize them
     //      - set three axis vectors enabled
-    auto* ps_cloud = polyscope::registerPointCloud("ee_frame", ee_point);
-    ps_cloud->setPointRadius(0.02);
-    auto* x_q = ps_cloud->addVectorQuantity("x_axis", ee_x);
-    x_q->setVectorColor({1.0, 0.0, 0.0});
-    x_q->setVectorRadius(0.1);
-    x_q->setVectorLengthScale(0.1);
-    x_q->setEnabled(true);
-    auto* y_q = ps_cloud->addVectorQuantity("y_axis", ee_y);
-    y_q->setVectorColor({0.0, 1.0, 0.0});
-    y_q->setVectorRadius(0.1);
-    y_q->setVectorLengthScale(0.1);
-    y_q->setEnabled(true);
-    auto* z_q = ps_cloud->addVectorQuantity("z_axis", ee_z);
-    z_q->setVectorColor({0.0, 0.0, 1.0});
-    z_q->setVectorRadius(0.1);
-    z_q->setVectorLengthScale(0.1);
-    z_q->setEnabled(true);
+
+
+
 
     // UI callback of the meshes and the frames
     polyscope::state::userCallback = [&]() {
@@ -128,10 +114,8 @@ void task1() {
         ee_z[0] = axis_len * R.col(2);
 
         // TODO 2: Update the frame while callback, particularly, update the ps_cloud and three axis vector x_q, y_q and z_q
-        ps_cloud->updatePointPositions(ee_point);
-        x_q->updateData(ee_x);
-        y_q->updateData(ee_y);
-        z_q->updateData(ee_z);
+
+
     };
 
     polyscope::show();

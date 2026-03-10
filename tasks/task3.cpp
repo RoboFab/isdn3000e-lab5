@@ -18,6 +18,7 @@
 
 
 
+
 void task3() {
 
     polyscope::init();
@@ -200,25 +201,27 @@ void task3() {
     };
 
     std::vector<Eigen::Matrix4d> T_waypoints;
+    // TODO: Fill in the following three waypoint frames T_waypoint1, T_waypoint2, and T_goal so that the end-effector
+    //  follows a multi-frame path to catch the cube without colliding with the obstacle wall.
+    //  You can add more waypoint frames if you want.
     Eigen::Matrix3d R_waypoint1 =
-        (Eigen::AngleAxisd(M_PI / 3.0, Eigen::Vector3d::UnitZ()) *
-         Eigen::AngleAxisd(2.0 * M_PI / 3.0, Eigen::Vector3d::UnitX())).toRotationMatrix();
+        (Eigen::AngleAxisd(M_PI, Eigen::Vector3d::UnitZ()) *
+         Eigen::AngleAxisd(M_PI, Eigen::Vector3d::UnitX())).toRotationMatrix();
     Eigen::Matrix4d T_waypoint1;
     T_waypoint1 <<
-        R_waypoint1(0,0), R_waypoint1(0,1), R_waypoint1(0,2), 0.4,
-        R_waypoint1(1,0), R_waypoint1(1,1), R_waypoint1(1,2), -0.10,
-        R_waypoint1(2,0), R_waypoint1(2,1), R_waypoint1(2,2), 0.75,
+        R_waypoint1(0,0), R_waypoint1(0,1), R_waypoint1(0,2), 0.1,
+        R_waypoint1(1,0), R_waypoint1(1,1), R_waypoint1(1,2), 0.1,
+        R_waypoint1(2,0), R_waypoint1(2,1), R_waypoint1(2,2), 0.1,
         0.0,        0.0,        0.0,        1.0;
 
     Eigen::Matrix3d R_waypoint2 =
-        (Eigen::AngleAxisd(5.0 * M_PI / 12.0, Eigen::Vector3d::UnitZ()) *
-         Eigen::AngleAxisd(M_PI / 6.0, Eigen::Vector3d::UnitY()) *
-         Eigen::AngleAxisd(M_PI / 4.0, Eigen::Vector3d::UnitX())).toRotationMatrix();
+        (Eigen::AngleAxisd(M_PI, Eigen::Vector3d::UnitZ()) *
+         Eigen::AngleAxisd(M_PI, Eigen::Vector3d::UnitX())).toRotationMatrix();
     Eigen::Matrix4d T_waypoint2;
     T_waypoint2 <<
-        R_waypoint2(0,0), R_waypoint2(0,1), R_waypoint2(0,2), 0.5,
-        R_waypoint2(1,0), R_waypoint2(1,1), R_waypoint2(1,2), -0.1,
-        R_waypoint2(2,0), R_waypoint2(2,1), R_waypoint2(2,2), 0.65,
+        R_waypoint2(0,0), R_waypoint2(0,1), R_waypoint2(0,2), 0.2,
+        R_waypoint2(1,0), R_waypoint2(1,1), R_waypoint2(1,2), 0.2,
+        R_waypoint2(2,0), R_waypoint2(2,1), R_waypoint2(2,2), 0.2,
         0.0,        0.0,        0.0,        1.0;
 
     Eigen::Matrix4d T_goal;
@@ -233,7 +236,7 @@ void task3() {
     T_waypoints.push_back(T_goal);
 
     // Visualize waypoint frames
-    for (int i = 0; i < (int)T_waypoints.size(); ++i) {
+    for (int i = 0; i < T_waypoints.size(); ++i) {
         pinocchio::SE3 M_wp(
             T_waypoints[i].block<3,3>(0,0),
             T_waypoints[i].block<3,1>(0,3)

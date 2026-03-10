@@ -1,8 +1,15 @@
+# build
 build/
-cmake-build-debug/
-cmake-build-release/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+
+# compiled
 *.o
-*.obj
+*.out
 *.exe
-.DS_Store
-.idea
+
+
+# IDE
+.idea/
+.vscode/

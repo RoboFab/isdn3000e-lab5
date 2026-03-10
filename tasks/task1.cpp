@@ -73,6 +73,13 @@ void task1() {
     ee_x[0] = axis_len * R.col(0);
     ee_y[0] = axis_len * R.col(1);
     ee_z[0] = axis_len * R.col(2);
+
+    // TODO 1: Draw the frame of the end effector, which consists of:
+    //   - an origin point using ps_cloud = registerPointCloud()
+    //   - three axis directions X, Y, Z using i.e. x_q = ps_cloud->addVectorQuantity("x_axis", ee_x)
+    //      - set color to three axis directions: X = red, Y = green, Z = blue
+    //      - set each direction vector radius to 0.1 and vector length scale to 0.1 to better visualize them
+    //      - set three axis vectors enabled
     auto* ps_cloud = polyscope::registerPointCloud("ee_frame", ee_point);
     ps_cloud->setPointRadius(0.02);
     auto* x_q = ps_cloud->addVectorQuantity("x_axis", ee_x);
@@ -120,11 +127,11 @@ void task1() {
         ee_y[0] = axis_len * R.col(1);
         ee_z[0] = axis_len * R.col(2);
 
+        // TODO 2: Update the frame while callback, particularly, update the ps_cloud and three axis vector x_q, y_q and z_q
         ps_cloud->updatePointPositions(ee_point);
         x_q->updateData(ee_x);
         y_q->updateData(ee_y);
         z_q->updateData(ee_z);
-        
     };
 
     polyscope::show();

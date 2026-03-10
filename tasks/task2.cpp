@@ -118,6 +118,8 @@ void task2() {
     // Define the target frame
     std::vector<Eigen::Vector3d> target_point(1), target_x(1), target_y(1), target_z(1);
     Eigen::Matrix4d T_goal;
+    // TODO 3: Revise the target frame to lead the robot to get the cube
+    //  Hint: your can change the numbers of R and T_goal to obtain the correct frame
     Eigen::Matrix3d R =
         (Eigen::AngleAxisd(M_PI / 2.0, Eigen::Vector3d::UnitZ()) *
          Eigen::AngleAxisd(M_PI / 6.0, Eigen::Vector3d::UnitY())).toRotationMatrix();
@@ -164,6 +166,16 @@ void task2() {
     const double damping = 1e-3;
     const double eps = 1e-4;
     const int max_iters = 300;
+    // TODO 1: Complete IK iteration
+    //  We want the end-effector frame to match the target frame M_goal.
+    //  In each iteration:
+    //   1. Read the current end-effector pose from data.oMf[ee_fid]
+    //   2. Compute the pose error from current EE frame to target frame
+    //   3. Convert the SE3 error to a 6D twist vector using log6()
+    //   4. Compute the frame Jacobian
+    //   5. Solve a damped least-squares update
+    //   6. Integrate the update into q_try
+
     for (int it = 0; it < max_iters; ++it) {
         pinocchio::framesForwardKinematics(model, data, q_try);
         pinocchio::SE3 M_ee = data.oMf[ee_fid];
@@ -176,9 +188,8 @@ void task2() {
         }
         Eigen::MatrixXd J(6, model.nv);
         pinocchio::computeFrameJacobian(model, data, q_try, ee_fid, pinocchio::LOCAL, J);
-        Eigen::Matrix<double, 6, 6> A =
-            J * J.transpose() + damping * Eigen::Matrix<double, 6, 6>::Identity();
-        Eigen::VectorXd dq = J.transpose() * A.ldlt().solve(err);
+        Eigen::Matrix<double, 6, 6> I = Eigen::Matrix<double, 6, 6>::Identity();
+        Eigen::VectorXd dq = J.transpose() * (J * J.transpose() + damping * I).ldlt().solve(err);
         q_try = pinocchio::integrate(model, q_try, alpha * dq);
         if (finger1_q >= 0) q_try[finger1_q] = q_start[finger1_q];
         if (finger2_q >= 0) q_try[finger2_q] = q_start[finger2_q];
@@ -192,6 +203,11 @@ void task2() {
         ImGui::Separator();
         ImGui::SliderFloat("Motion", &s, 0.0f, 1.0f);
         if (ik_success) {
+            // TODO 2: Joint interpolation
+            //  The slider s is in [0, 1]:
+            //    when s = 0, q should equal q_start
+            //    when s = 1, q should equal q_goal
+            //  So we linearly interpolate joints between q_start and q_goal via (1.0 - s) * q_start + s * q_goal
             q = (1.0 - s) * q_start + s * q_goal;
         } else {
             q = q_start;

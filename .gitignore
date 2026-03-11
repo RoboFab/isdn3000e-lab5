@@ -6,3 +6,4 @@ cmake-build-release/
 *.exe
 .DS_Store
 .idea
+!robot/franka_description/meshes/**/*.obj

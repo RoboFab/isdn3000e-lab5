@@ -200,7 +200,7 @@ void task3() {
     };
 
     std::vector<Eigen::Matrix4d> T_waypoints;
-    // TODO: Fill in the following three waypoint frames T_waypoint1, T_waypoint2, and T_goal so that the end-effector
+    // TODO: Revise the following three waypoint frames T_waypoint1, T_waypoint2, and T_goal so that the end-effector
     //  follows a multi-frame path to catch the cube without colliding with the obstacle wall.
     //  You can add more waypoint frames if you want.
     Eigen::Matrix3d R_waypoint1 =
